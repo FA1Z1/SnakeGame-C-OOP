@@ -54,8 +54,8 @@ public:
         updateSize();
         if (size == 0)
         {
-            tail_x[0] = X;
-            tail_y[0] = Y;
+            tail_x[0] = prevX;
+            tail_y[0] = prevY;
         }
         else
         {
@@ -269,6 +269,16 @@ public:
             s->setBody();
             score++;
             generateFruit();
+        }
+        if (blob == false)
+        {
+            for (int i = 1; i < s->getSize(); i++)
+            {
+                if (s->getX() == s->getTail_x(i) && s->getY() == s->getTail_y(i))
+                {
+                    gameOver = true;
+                }
+            }
         }
     }
     void move()
