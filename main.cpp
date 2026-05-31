@@ -105,6 +105,7 @@ public:
         {
             for (int j = 0; j < width; j++)
             {
+
                 if ((i == 0 || i == height - 1) || (j == 0 || j == width - 1))
                     cout << "#";
                 else if (s->getX() == j && s->getY() == i)
@@ -114,15 +115,28 @@ public:
             }
             cout << endl;
         }
+    }
+    void interaction()
+    {
+        if ((s->getX() == 0 || s->getX() == width - 1) || (s->getY() == 0 || s->getY() == height - 1))
+            gameOver = true;
+    }
+    void move()
+    {
         s->movement();
     }
 };
 int main()
 {
-    Grid g;
-    while (!g.ifGameOver())
+    Grid *g = new Grid;
+    g->render();
+    while (1)
     {
-        g.render();
+        g->move();
+        g->interaction();
+        if (g->ifGameOver() == true)
+            break;
+        g->render();
     }
     cout << "Game Over!" << endl;
     return 0;
