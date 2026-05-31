@@ -120,22 +120,26 @@ public:
                 {
                 case 72:
                 { // up
-                    dir = 1;
+                    if (dir != 2)
+                        dir = 1;
                     break;
                 }
                 case 80:
                 { // down
-                    dir = 2;
+                    if (dir != 1)
+                        dir = 2;
                     break;
                 }
                 case 75:
                 { // left
-                    dir = 3;
+                    if (dir != 4)
+                        dir = 3;
                     break;
                 }
                 case 77:
                 { // right
-                    dir = 4;
+                    if (dir != 3)
+                        dir = 4;
                     break;
                 }
                 }
@@ -145,21 +149,25 @@ public:
         {
         case 1:
         { // up
+
             Y--;
             break;
         }
         case 2:
         { // down
+
             Y++;
             break;
         }
         case 3:
         { // left
+
             X--;
             break;
         }
         case 4:
         { // right
+
             X++;
             break;
         }
