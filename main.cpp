@@ -104,11 +104,6 @@ public:
         {
             for (int j = 0; j < width; j++)
             {
-                if (s->getX() == 0 || s->getY() == 0)
-                {
-                    gameOver = true;
-                    exit(0);
-                }
                 if ((i == 0 || i == height - 1) || (j == 0 || j == width - 1))
                     cout << "#";
                 else if (s->getX() == j && s->getY() == i)
