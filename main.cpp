@@ -95,26 +95,14 @@ public:
         p->setName();
         s = new Snake(height, width);
         gameOver = false;
-        do
-        {
-            fruit_y = rand() % width - 1;
-        } while (fruit_y == 0);
-        do
-        {
-            fruit_x = rand() % height - 1;
-        } while (fruit_x == 0);
         score = 0;
+        generateFruit();
     }
     void generateFruit()
     {
-        do
-        {
-            fruit_y = rand() % (width - 1);
-        } while (fruit_y == 0);
-        do
-        {
-            fruit_x = rand() % (height - 1);
-        } while (fruit_x == 0);
+
+        fruit_y = (rand() % (height - 2)) + 1;
+        fruit_x = (rand() % (width - 2)) + 1;
     }
     bool ifGameOver()
     {
