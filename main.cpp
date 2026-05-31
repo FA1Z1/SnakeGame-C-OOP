@@ -31,9 +31,10 @@ private:
     int Y;
     int l_X;
     int l_Y;
+    int dir;
 
 public:
-    Snake(int height, int width) : X(width / 2), Y(height / 2), l_X(0), l_Y(0) {}
+    Snake(int height, int width) : X(width / 2), Y(height / 2), l_X(0), l_Y(0), dir(0) {}
     int getX()
     {
         return X;
@@ -44,33 +45,59 @@ public:
     }
     void movement()
     {
-        int c = _getch();
-        if (c == 0 || c == 224)
+        if (_kbhit())
         {
-            int m = _getch();
-            switch (m)
+            int c = _getch();
+            if (c == 0 || c == 224)
             {
-            case 72:
-            { // up
-                Y--;
-                break;
+                c = _getch();
+                switch (c)
+                {
+                case 72:
+                { // up
+                    dir = 1;
+                    break;
+                }
+                case 80:
+                { // down
+                    dir = 2;
+                    break;
+                }
+                case 75:
+                { // left
+                    dir = 3;
+                    break;
+                }
+                case 77:
+                { // right
+                    dir = 4;
+                    break;
+                }
+                }
             }
-            case 80:
-            { // down
-                Y++;
-                break;
-            }
-            case 75:
-            { // left
-                X--;
-                break;
-            }
-            case 77:
-            { // right
-                X++;
-                break;
-            }
-            }
+        }
+        switch (dir)
+        {
+        case 1:
+        { // up
+            Y--;
+            break;
+        }
+        case 2:
+        { // down
+            Y++;
+            break;
+        }
+        case 3:
+        { // left
+            X--;
+            break;
+        }
+        case 4:
+        { // right
+            X++;
+            break;
+        }
         }
     }
 };
