@@ -31,10 +31,13 @@ private:
     int Y;
     int l_X;
     int l_Y;
+    int tail_x;
+    int tail_y;
     int dir;
+    int size;
 
 public:
-    Snake(int height, int width) : X(width / 2), Y(height / 2), l_X(0), l_Y(0), dir(0) {}
+    Snake(int height, int width) : X(width / 2), Y(height / 2), l_X(0), l_Y(0), dir(0), size(0), tail_x(0), tail_y(0) {}
     int getX()
     {
         return X;
@@ -42,6 +45,10 @@ public:
     int getY()
     {
         return Y;
+    }
+    void setBody()
+    {
+        size++;
     }
     void movement()
     {
@@ -164,7 +171,7 @@ public:
             gameOver = true;
         if (s->getX() == fruit_x && s->getY() == fruit_y)
         {
-
+            s->setBody();
             score++;
             generateFruit();
         }
@@ -172,6 +179,13 @@ public:
     void move()
     {
         s->movement();
+    }
+    ~Grid()
+    {
+        delete p;
+        p = nullptr;
+        delete s;
+        s = nullptr;
     }
 };
 int main()
@@ -188,5 +202,7 @@ int main()
         g->render();
     }
     cout << "Game Over!" << endl;
+    delete g;
+    g = nullptr;
     return 0;
 }
