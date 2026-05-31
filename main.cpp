@@ -40,7 +40,7 @@ public:
     {
         tail_x = new int[size];
         tail_y = new int[size];
-    } // continues with tail function
+    }
     int getX()
     {
         return X;
@@ -103,12 +103,12 @@ public:
             tail_x[i] = tail_x[i - 1];
             tail_y[i] = tail_y[i - 1];
         }
-        tail_x[0] = prevX; // ✅ where head WAS, not where it is now
+        tail_x[0] = prevX;
         tail_y[0] = prevY;
     }
     void movement()
     {
-        prevX = X; // save before moving
+        prevX = X;
         prevY = Y;
         if (_kbhit())
         {
