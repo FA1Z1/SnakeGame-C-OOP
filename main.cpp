@@ -82,6 +82,9 @@ private:
     Player *p;
     Snake *s;
     bool gameOver;
+    int fruit_x;
+    int fruit_y;
+    int score;
 
 public:
     Grid()
@@ -91,7 +94,27 @@ public:
         p = new Player;
         p->setName();
         s = new Snake(height, width);
-        bool gameOver = false;
+        gameOver = false;
+        do
+        {
+            fruit_y = rand() % width - 1;
+        } while (fruit_y == 0);
+        do
+        {
+            fruit_x = rand() % height - 1;
+        } while (fruit_x == 0);
+        score = 0;
+    }
+    void generateFruit()
+    {
+        do
+        {
+            fruit_y = rand() % (width - 1);
+        } while (fruit_y == 0);
+        do
+        {
+            fruit_x = rand() % (height - 1);
+        } while (fruit_x == 0);
     }
     bool ifGameOver()
     {
@@ -100,7 +123,7 @@ public:
     void render()
     {
         system("cls");
-        cout << "Player : " << p->getName() << endl;
+        cout << "Player : " << p->getName() << "\t" << "Score : " << score << endl;
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -108,6 +131,10 @@ public:
 
                 if ((i == 0 || i == height - 1) || (j == 0 || j == width - 1))
                     cout << "#";
+                else if (fruit_x == j && fruit_y == i)
+                {
+                    cout << "@";
+                }
                 else if (s->getX() == j && s->getY() == i)
                     cout << "o";
                 else
@@ -120,6 +147,12 @@ public:
     {
         if ((s->getX() == 0 || s->getX() == width - 1) || (s->getY() == 0 || s->getY() == height - 1))
             gameOver = true;
+        if (s->getX() == fruit_x && s->getY() == fruit_y)
+        {
+
+            score++;
+            generateFruit();
+        }
     }
     void move()
     {
@@ -128,6 +161,7 @@ public:
 };
 int main()
 {
+    srand(time(NULL));
     Grid *g = new Grid;
     g->render();
     while (1)
