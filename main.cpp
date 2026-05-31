@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 using namespace std;
+
 class Player
 {
 private:
