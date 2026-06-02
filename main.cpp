@@ -13,10 +13,9 @@ private:
 public:
     Player() {}
     Player(string n) : name(n) {}
-    void setName()
+    void setName(string name)
     {
-        cout << "Select a Username: ";
-        cin >> name;
+        this->name = name;
     }
     string getName()
     {
@@ -54,8 +53,8 @@ public:
         updateSize();
         if (size == 0)
         {
-            tail_x[0] = X;
-            tail_y[0] = Y;
+            tail_x[0] = prevX;
+            tail_y[0] = prevY;
         }
         else
         {
@@ -120,22 +119,26 @@ public:
                 {
                 case 72:
                 { // up
-                    dir = 1;
+                    if (dir != 2)
+                        dir = 1;
                     break;
                 }
                 case 80:
                 { // down
-                    dir = 2;
+                    if (dir != 1)
+                        dir = 2;
                     break;
                 }
                 case 75:
                 { // left
-                    dir = 3;
+                    if (dir != 4)
+                        dir = 3;
                     break;
                 }
                 case 77:
                 { // right
-                    dir = 4;
+                    if (dir != 3)
+                        dir = 4;
                     break;
                 }
                 }
@@ -145,21 +148,25 @@ public:
         {
         case 1:
         { // up
+
             Y--;
             break;
         }
         case 2:
         { // down
+
             Y++;
             break;
         }
         case 3:
         { // left
+
             X--;
             break;
         }
         case 4:
         { // right
+
             X++;
             break;
         }
@@ -192,7 +199,6 @@ public:
         height = 25;
         width = 30;
         p = new Player;
-        p->setName();
         s = new Snake(height, width);
         gameOver = false;
         blob = false;
@@ -208,6 +214,16 @@ public:
     bool ifGameOver()
     {
         return gameOver;
+    }
+    bool askName(string name)
+    {
+        if (name.length() > 20)
+        {
+
+            return false;
+        }
+        p->setName(name);
+        return true;
     }
     void render()
     {
@@ -262,6 +278,16 @@ public:
             score++;
             generateFruit();
         }
+        if (blob == false)
+        {
+            for (int i = 1; i < s->getSize(); i++)
+            {
+                if (s->getX() == s->getTail_x(i) && s->getY() == s->getTail_y(i))
+                {
+                    gameOver = true;
+                }
+            }
+        }
     }
     void move()
     {
@@ -278,7 +304,52 @@ public:
 int main()
 {
     srand(time(NULL));
+    while (1)
+    {
+        system("cls");
+        cout << "\n\n\n\n\n\n\t\t\t\t\t\t\t\t __  _  _   _   _  _ ___    __   _   _   _  ___ \n";
+        cout << "\t\t\t\t\t\t\t\t/ _|| \\| | / \\ | |//| __|  / _| / \\ | \\_/ || __|\n";
+        cout << "\t\t\t\t\t\t\t\t\\_ \\| \\\\ || o ||  ( | _|  ( |_n| o || \\_/ || _| \n";
+        cout << "\t\t\t\t\t\t\t\t|__/|_|\\_||_n_||_|\\\\|___|  \\__/|_n_||_| |_||___|\n\n";
+
+        cout << "\t\t\t\t\t\t\t\t\t _     __  ___  _   ___  ___ \n";
+        cout << "\t\t\t\t\t\t\t\t\t/_|   / _||_ _|/ \\ | o \\|_ _|\n";
+        cout << "\t\t\t\t\t\t\t\t\t ||   \\_ \\ | || o ||   / | | \n";
+        cout << "\t\t\t\t\t\t\t\t\t L| O |__/ |_||_n_||_|\\\\ |_|\n";
+
+        cout << "\t\t\t\t\t\t\t\t\t   __     ___ __ __ _  ___ \n";
+        cout << "\t\t\t\t\t\t\t\t\t  [o )   | __|\\ V /| ||_ _|\n";
+        cout << "\t\t\t\t\t\t\t\t\t   /(    | _|  ) ( | | | | \n";
+        cout << "\t\t\t\t\t\t\t\t\t  /__| O |___|/_n_\\|_| |_|\n";
+        int main_choice = _getch();
+        if (main_choice == '2')
+            exit(0);
+        else if (main_choice == '1')
+            break;
+        else
+            cout << "\a";
+        system("cls");
+    }
     Grid *g = new Grid;
+    while (1)
+    {
+
+        cout << "\n\n\n\n\n\n\t\t\t\t\t\t  ___  _  _  ___  ___  ___  __ __ _   _ _  ___   _  _   _   _   _  ___ \n";
+        cout << "\t\t\t\t\t\t | __|| \\| ||_ _|| __|| o \\ \\ V // \\ | | || o \\ | \\| | / \\ | \\_/ || __|\n";
+        cout << "\t\t\t\t\t\t | _| | \\\\ | | | | _| |   /  \\ /( o )| U ||   / | \\\\ || o || \\_/ || _| \n";
+        cout << "\t\t\t\t\t\t |___||_|\\_| |_| |___||_|\\\\  |_| \\_/ |___||_|\\\\ |_|\\_||_n_||_| |_||___|\n";
+        string name;
+        getline(cin, name);
+        if (g->askName(name) == true)
+            break;
+        else
+            cout << "\a";
+        cout << "\n\n\n\n\t\t\t\t\t\t\t\t";
+        cout << "*Name cannot be longer than 20 characters*\n";
+
+        system("cls");
+    }
+
     g->render();
     while (1)
     {
