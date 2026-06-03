@@ -215,15 +215,9 @@ public:
     {
         return gameOver;
     }
-    bool askName(string name)
+    void askName(string name)
     {
-        if (name.length() > 20)
-        {
-
-            return false;
-        }
         p->setName(name);
-        return true;
     }
     void render()
     {
@@ -328,27 +322,26 @@ int main()
             break;
         else
             cout << "\a";
-        system("cls");
     }
     Grid *g = new Grid;
-    while (1)
+    string name;
+    do
     {
-
+        system("cls");
         cout << "\n\n\n\n\n\n\t\t\t\t\t\t  ___  _  _  ___  ___  ___  __ __ _   _ _  ___   _  _   _   _   _  ___ \n";
         cout << "\t\t\t\t\t\t | __|| \\| ||_ _|| __|| o \\ \\ V // \\ | | || o \\ | \\| | / \\ | \\_/ || __|\n";
         cout << "\t\t\t\t\t\t | _| | \\\\ | | | | _| |   /  \\ /( o )| U ||   / | \\\\ || o || \\_/ || _| \n";
         cout << "\t\t\t\t\t\t |___||_|\\_| |_| |___||_|\\\\  |_| \\_/ |___||_|\\\\ |_|\\_||_n_||_| |_||___|\n";
-        string name;
-        getline(cin, name);
-        if (g->askName(name) == true)
-            break;
+        if (name.length() <= 20)
+            g->askName(name);
         else
+        {
             cout << "\a";
-        cout << "\n\n\n\n\t\t\t\t\t\t\t\t";
-        cout << "*Name cannot be longer than 20 characters*\n";
-
-        system("cls");
-    }
+            cout << "\n\n\n\n\t\t\t\t\t\t\t\t";
+            cout << "*Name cannot be longer than 20 characters*\n";
+                }
+        getline(cin, name);
+    } while (name.length() > 20);
 
     g->render();
     while (1)
