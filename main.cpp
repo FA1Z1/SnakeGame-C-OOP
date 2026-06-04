@@ -258,6 +258,14 @@ public:
             cout << endl;
         }
     }
+    void setBlob(bool b)
+    {
+        blob = b;
+    }
+    bool getBlob()
+    {
+        return blob;
+    }
     void forBody()
     {
         s->updateBody();
@@ -339,15 +347,45 @@ int main()
             cout << "\a";
             cout << "\n\n\n\n\t\t\t\t\t\t\t\t";
             cout << "*Name cannot be longer than 20 characters*\n";
-                }
+        }
         getline(cin, name);
     } while (name.length() > 20);
-
+    while (1)
+    {
+        system("cls");
+        cout << "\n\n\n\n\n\n\t\t\t\t\t\t\t\t   __   _   _   _  ___   _   _   _   __   ___ \n";
+        cout << "\t\t\t\t\t\t\t\t  / _| / \\ | \\_/ || __| | \\_/ | / \\ |  \\ | __|\n";
+        cout << "\t\t\t\t\t\t\t\t ( |_n| o || \\_/ || _|  | \\_/ |( o )| o )| _| \n";
+        cout << "\t\t\t\t\t\t\t\t  \\__/|_n_||_| |_||___| |_| |_| \\_/ |__/ |___|\n";
+        cout << "\t\t\t\t\t\t\t\t\t  _     __  _  _   _   _  _ ___ \n";
+        cout << "\t\t\t\t\t\t\t\t\t /_|   / _|| \\| | / \\ | |//| __|\n";
+        cout << "\t\t\t\t\t\t\t\t\t  ||   \\_ \\| \\\\ || o ||  ( | _| \n";
+        cout << "\t\t\t\t\t\t\t\t\t  L| O |__/|_|\\_||_n_||_|\\\\|___|\n";
+        cout << "\t\t\t\t\t\t\t\t\t    __     ___  _    _   ___ \n";
+        cout << "\t\t\t\t\t\t\t\t\t   [o )   | o )| |  / \\ | o )\n";
+        cout << "\t\t\t\t\t\t\t\t\t    /(    | o \\| |_( o )| o \\\n";
+        cout << "\t\t\t\t\t\t\t\t\t   /__| o |___/|___|\\_/ |___/\n";
+        int mode_choice = _getch();
+        if (mode_choice == '2')
+        {
+            g->setBlob(true);
+            break;
+        }
+        else if (mode_choice == '1')
+        {
+            break;
+        }
+        else
+            printf("\a");
+    }
     g->render();
     while (1)
     {
         g->move();
-        g->forBody();
+        if (g->getBlob() == false)
+        {
+            g->forBody();
+        }
         g->interaction();
         if (g->ifGameOver() == true)
             break;
