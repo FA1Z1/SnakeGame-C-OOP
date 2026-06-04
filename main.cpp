@@ -3,6 +3,8 @@
 #include <string>
 #include <cstdlib>
 #include <windows.h>
+#include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -38,8 +40,8 @@ private:
 public:
     Snake(int height, int width) : X(width / 2), Y(height / 2), dir(0), size(0)
     {
-        tail_x = new int[size];
-        tail_y = new int[size];
+        tail_x = new int[1000];
+        tail_y = new int[1000];
     }
     int getX()
     {
@@ -51,17 +53,12 @@ public:
     }
     void setBody()
     {
-        updateSize();
-        if (size == 0)
-        {
-            tail_x[0] = prevX;
-            tail_y[0] = prevY;
-        }
-        else
-        {
-            tail_x[size] = tail_x[size - 1];
-            tail_y[size] = tail_y[size - 1];
-        }
+        if (size >= 999)
+            return;
+
+        tail_x[size] = tail_x[size - 1];
+        tail_y[size] = tail_y[size - 1];
+
         size++;
     }
     int getSize()
@@ -76,33 +73,17 @@ public:
     {
         return tail_y[n];
     }
-    void updateSize()
-    {
-        int *temp1 = new int[size + 1];
-        int *temp2 = new int[size + 1];
-        for (int i = 0; i < size; i++)
-        {
-            temp2[i] = tail_y[i];
-            temp1[i] = tail_x[i];
-        }
-        delete[] tail_x;
-        delete[] tail_y;
-        tail_x = temp1;
-        tail_y = temp2;
-        temp1 = nullptr;
-        temp2 = nullptr;
-    }
     void updateBody()
     {
         if (size == 0)
             return;
-        if (size == 0)
-            return;
+
         for (int i = size - 1; i > 0; i--)
         {
             tail_x[i] = tail_x[i - 1];
             tail_y[i] = tail_y[i - 1];
         }
+
         tail_x[0] = prevX;
         tail_y[0] = prevY;
     }
@@ -194,6 +175,8 @@ private:
     int score;
     bool blob;
     int diff;
+    string name;
+    int sc;
 
 public:
     Grid()
@@ -206,13 +189,80 @@ public:
         blob = false;
         score = 0;
         diff = 1;
+        name = "none";
+        sc = 0;
         generateFruit();
+    }
+    void loadfile()
+    {
+        string filename = (blob == false ? "snake_highscore.txt" : "blob_highscore.txt");
+        ifstream infile(filename);
+
+        name = "none";
+        sc = 0;
+
+        if (!infile)
+            return;
+
+        string line;
+        if (getline(infile, line))
+        {
+            int pos = line.find('|');
+            if (pos != string::npos)
+            {
+                name = line.substr(0, pos);
+                sc = stoi(line.substr(pos + 1));
+            }
+        }
+
+        infile.close();
+    }
+    void savefile()
+    {
+        string filename = ((blob == false) ? "snake_highscore.txt" : "blob_highscore.txt");
+
+        ofstream outfile(filename);
+        cout << filename << endl;
+        if (outfile.fail())
+        {
+            cout << "Failed to open file: " << filename << endl;
+            return;
+        }
+        if (score > sc)
+        {
+            outfile << p->getName() << "|" << score << endl;
+        }
+        else
+        {
+            outfile << name << "|" << sc << endl;
+        }
+        outfile.close();
     }
     void generateFruit()
     {
-
-        fruit_y = (rand() % (height - 2)) + 1;
-        fruit_x = (rand() % (width - 2)) + 1;
+        while (true)
+        {
+            fruit_y = (rand() % (height - 2)) + 1;
+            fruit_x = (rand() % (width - 2)) + 1;
+            if (fruit_x == 0 || fruit_x == width - 1 ||
+                fruit_y == 0 || fruit_y == height - 1)
+                continue;
+            if (diff == 3)
+            {
+                if ((fruit_x == 7 && (fruit_y >= 5 && fruit_y <= 7)) ||
+                    (fruit_x == 7 && (fruit_y >= 17 && fruit_y <= 19)) ||
+                    (fruit_x == 8 && (fruit_y == 5 || fruit_y == 19)) ||
+                    (fruit_x == 9 && (fruit_y == 5 || fruit_y == 19)) ||
+                    (fruit_x == 20 && (fruit_y == 5 || fruit_y == 19)) ||
+                    (fruit_x == 21 && (fruit_y == 5 || fruit_y == 19)) ||
+                    (fruit_x == 22 && (fruit_y >= 5 && fruit_y <= 7)) ||
+                    (fruit_x == 22 && (fruit_y >= 17 && fruit_y <= 19)))
+                {
+                    continue;
+                }
+            }
+            break;
+        }
     }
     bool ifGameOver()
     {
@@ -225,7 +275,13 @@ public:
     void render()
     {
         cout << "\033[1;0H";
+        // cout << "------------------------------" << endl;
+        cout << "\t   HighScore" << endl;
+
+        cout << "Player : " << name << "\t" << "Score : " << sc << endl;
+        cout << "------------------------------" << endl;
         cout << "Player : " << p->getName() << "\t" << "Score : " << score << endl;
+
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -381,6 +437,7 @@ int main()
     } while (name.length() > 20 || name.empty());
 
     g->askName(name);
+
     while (1)
     {
         cout << "\033[?25l";
@@ -451,6 +508,8 @@ int main()
             printf("\a");
     }
     system("cls");
+    g->loadfile();
+    system("cls");
     g->render();
     while (1)
     {
@@ -466,6 +525,7 @@ int main()
         g->render();
         Sleep(speed);
     }
+    g->savefile();
     char e;
     cout << "Game Over! Press 0 to exit..." << endl;
     while (1)
